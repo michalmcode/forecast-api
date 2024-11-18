@@ -1,6 +1,9 @@
 import os
 
 from flask import Flask
+from flask_marshmallow import Marshmallow
+
+ma = Marshmallow()
 
 
 def create_app(test_config=None):
@@ -24,9 +27,15 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route("/hello")
-    def hello():
-        return "Hello, World!"
+    # Serialization
+    ma.init_app(app)
+
+    # Blueprints
+    from api.routes import forecast_routes
+
+    app.register_blueprint(forecast_routes.bp)
+
+    # Error handling
+    # TODO: Implement error handling
 
     return app

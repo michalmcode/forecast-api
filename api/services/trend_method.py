@@ -81,11 +81,5 @@ def calculate(data: dict) -> dict:
     df_forecast["error_percentage"] = np.round(
         df_forecast["error"] / df_forecast["y*"] * 100, 2
     )
-    df_forecast
 
-    return {
-        "t": list(df_forecast["t"]),
-        "forecast_value": list(df_forecast["y*"]),
-        "error": list(df_forecast["error"]),
-        "error_percentage": list(df_forecast["error_percentage"]),
-    }
+    return df_forecast.to_dict()

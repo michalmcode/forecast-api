@@ -6,3 +6,7 @@ from api import ma
 class TrendForecastSchema(ma.Schema):
     values = fields.List(fields.Float(), required=True)
     periods = fields.Int(required=True)
+
+
+class MovingAverageForecastSchema(ma.Schema):
+    values = fields.List(fields.Float(), required=True)

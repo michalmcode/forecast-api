@@ -3,6 +3,20 @@ import pandas as pd
 
 
 def calculate(data: dict) -> dict:
+    """Generate a forecast using the Moving Average Method
+
+    Args:
+        data (dict): Dictionary with the data to be used in the forecast.
+            It should have the following structure:
+            ```
+            {
+                "values": list
+            }
+            ```
+
+    Returns:
+        dict: A dictionary with the forecast.
+    """
     window = 3
 
     df = pd.DataFrame(
@@ -22,4 +36,4 @@ def calculate(data: dict) -> dict:
         }
     )
 
-    return df_forecast.to_dict()
+    return df_forecast.to_dict(orient="list")

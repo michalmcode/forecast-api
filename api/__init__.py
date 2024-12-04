@@ -1,9 +1,12 @@
 import os
 
-from flask import Flask
+from dotenv import load_dotenv
+from flask import Flask, jsonify
 from flask_marshmallow import Marshmallow
+from werkzeug.exceptions import HTTPException
 
 ma = Marshmallow()
+load_dotenv()
 
 
 def create_app(test_config=None):
@@ -31,11 +34,23 @@ def create_app(test_config=None):
     ma.init_app(app)
 
     # Blueprints
-    from api.routes import forecast_routes
+    from api.routes import forecast_routes, file_routes
 
     app.register_blueprint(forecast_routes.bp)
+    app.register_blueprint(file_routes.bp)
 
     # Error handling
-    # TODO: Implement error handling
+    @app.errorhandler(HTTPException)
+    def handle_http_exception(err):
+        return (
+            jsonify(
+                {
+                    "code": err.code,
+                    "name": err.name,
+                    "description": err.description,
+                }
+            ),
+            err.code,
+        )
 
     return app

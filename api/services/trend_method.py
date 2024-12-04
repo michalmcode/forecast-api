@@ -1,8 +1,25 @@
 import numpy as np
 import pandas as pd
 
+from api.utils import plot
 
-def calculate(data: dict) -> dict:
+
+def calculate(data: dict) -> tuple:
+    """Generate a forecast using the Trend Method
+
+    Args:
+        data (dict): Dictionary with the data to be used in the forecast.
+            It should have the following structure:
+            ```
+            {
+                "periods": int,
+                "values": list
+            }
+            ```
+
+    Returns:
+        tuple: A tuple with two elements: `(forecast, plot_filename)`.
+    """
     periods = data["periods"] + 1
 
     df = pd.DataFrame(
@@ -82,4 +99,11 @@ def calculate(data: dict) -> dict:
         df_forecast["error"] / df_forecast["y*"] * 100, 2
     )
 
-    return df_forecast.to_dict()
+    # Generate the plot and upload to AWS S3
+    plot_filename = ""
+    try:
+        plot_filename = plot.generate(df, df_forecast)
+    except Exception:
+        pass
+
+    return (df_forecast.to_dict(orient="list"), plot_filename)

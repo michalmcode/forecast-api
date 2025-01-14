@@ -31,7 +31,6 @@ def calculate(data: dict) -> tuple:
 
     df["t2"] = np.power(df["t"], 2)  # add a column with the time index squared
     df["yt"] = df["y"] * df["t"]  # add a column with the product of y and t
-    df["t"] = df["t"].astype(np.int64)  # make sure it's an integer
 
     # calculate the determinants
     # matrix W
